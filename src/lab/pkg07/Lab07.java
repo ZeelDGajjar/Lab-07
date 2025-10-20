@@ -6,17 +6,16 @@ package lab.pkg07;
 import java.awt.Button;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
+import javafx.animation.PathTransition;
 import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.SequentialTransition;
-import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
+import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -44,63 +43,47 @@ public class Lab07 extends Application{
         Button exit = new Button("Exit");
         
         // Part 1: Animation A: Path animation
-        Rectangle rectangle = new Rectangle(50, 50, 50, 50);
-        rectangle.setFill(Color.CADETBLUE);
+        Rectangle rectangle = new Rectangle(50, 50, 400, 400);
+        rectangle.setFill(Color.WHITE);
+        rectangle.setStroke(Color.BLACK);
         
-        TranslateTransition right = new TranslateTransition(new Duration(2000), rectangle);
-        right.setToX(400);
-        right.play();
+        Rectangle rectangleObj = new Rectangle(50, 50, 50, 50);
+        rectangleObj.setFill(Color.CADETBLUE);
         
-        TranslateTransition down = new TranslateTransition(new Duration(2000), rectangle);
-        right.setToX(400);
-        down.setToY(400);
-        down.play();
-        
-        TranslateTransition left = new TranslateTransition(new Duration(2000), rectangle);
-        left.setToX(0);
-        down.setToY(400);
-        left.play();
-        
-        TranslateTransition up = new TranslateTransition(new Duration(2000), rectangle);
-        up.setToX(0);
-        up.setToY(0);
-        up.play();
-        
-        SequentialTransition seq1 = new SequentialTransition(right, down, left, up);
-        seq1.play();
+        PathTransition pathTrans = new PathTransition();
+        pathTrans.setDuration(new Duration(16000));
+        pathTrans.setPath(rectangle);
+        pathTrans.setNode(rectangleObj);
         
         // Part 2: Animation B: Sequential animation
-        Circle circle = new Circle(250, 350, 25);
-        circle.setFill(Color.BLACK);
+        Ellipse ellipse = new Ellipse(250, 350, 25, 20);
+        ellipse.setFill(Color.BLUEVIOLET);
         
-        FadeTransition fade = new FadeTransition(new Duration(2000), circle);
+        FadeTransition fade = new FadeTransition(new Duration(2000), ellipse);
         fade.setAutoReverse(true);
         fade.setFromValue(1.0);
         fade.setToValue(0.5);
         fade.setCycleCount(2);
         
-        ScaleTransition scale = new ScaleTransition(new Duration(2000), circle);
+        ScaleTransition scale = new ScaleTransition(new Duration(2000), ellipse);
         scale.setAutoReverse(true);
         scale.setToX(2.0);
         scale.setToY(2.0);
         
-//        RotateTransition rotation = new RotateTransition(new Duration(2000), circle);
-//        rotation.setAutoReverse(true);
-//        rotation.play();
-//        
-//        TranslateTransition upCircle = new TranslateTransition(new Duration(2000), circle);
-//        upCircle.setAutoReverse(true);
-//        upCircle.setToX(100);
-//        upCircle.setToY(300);
-//        upCircle.play();
+        RotateTransition rotation = new RotateTransition(new Duration(2000), ellipse);
+        rotation.setByAngle(360);
+        rotation.setAutoReverse(true);
         
-        SequentialTransition seq2 = new SequentialTransition(fade, scale);
-        seq2.play();
+        TranslateTransition upCircle = new TranslateTransition(new Duration(2000), ellipse);
+        upCircle.setAutoReverse(true);
+        upCircle.setToY(-200);
         
-//        ParallelTransition para = new ParallelTransition(seq1, seq2);
-//        para.play();
+        SequentialTransition seq2 = new SequentialTransition(fade, scale, rotation, upCircle);
+
+        ParallelTransition para = new ParallelTransition(pathTrans, seq2);
+        para.play();
         
-        root.getChildren().addAll(rectangle, circle);
+        root.getChildren().addAll(rectangle, rectangleObj, ellipse);
         Scene scene = new Scene(root, 700, 700);
         stage.setScene(scene);
         stage.show();
