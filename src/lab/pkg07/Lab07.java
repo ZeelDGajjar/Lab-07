@@ -3,7 +3,6 @@
  */
 package lab.pkg07;
 
-import java.awt.Button;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.PathTransition;
@@ -12,7 +11,9 @@ import javafx.animation.ScaleTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
+import static javafx.application.Platform.exit;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
@@ -41,6 +42,13 @@ public class Lab07 extends Application{
         Button start = new Button("Start");
         Button reset = new Button("Reset");
         Button exit = new Button("Exit");
+        
+        start.setLayoutX(55);
+        start.setLayoutY(500);
+        reset.setLayoutX(105);
+        reset.setLayoutY(500);
+        exit.setLayoutX(160);
+        exit.setLayoutY(500);
         
         // Part 1: Animation A: Path animation
         Rectangle rectangle = new Rectangle(50, 50, 400, 400);
@@ -81,9 +89,21 @@ public class Lab07 extends Application{
         SequentialTransition seq2 = new SequentialTransition(fade, scale, rotation, upCircle);
 
         ParallelTransition para = new ParallelTransition(pathTrans, seq2);
-        para.play();
         
-        root.getChildren().addAll(rectangle, rectangleObj, ellipse);
+        // Buttons logic 
+        start.setOnAction(e -> {
+            para.play();
+        });
+        reset.setOnAction(e -> {
+           para.stop();
+           para.play();
+           para.stop();
+        });
+        exit.setOnAction(e -> {
+            exit();
+        });
+
+        root.getChildren().addAll(rectangle, rectangleObj, ellipse, start, reset, exit);
         Scene scene = new Scene(root, 700, 700);
         stage.setScene(scene);
         stage.show();
