@@ -55,11 +55,11 @@ public class Lab07 extends Application{
         rectangle.setFill(Color.WHITE);
         rectangle.setStroke(Color.BLACK);
         
-        Rectangle rectangleObj = new Rectangle(50, 50, 50, 50);
+        Rectangle rectangleObj = new Rectangle(25, 25, 50, 50);
         rectangleObj.setFill(Color.CADETBLUE);
         
         PathTransition pathTrans = new PathTransition();
-        pathTrans.setDuration(new Duration(16000));
+        pathTrans.setDuration(new Duration(15000));
         pathTrans.setPath(rectangle);
         pathTrans.setNode(rectangleObj);
         
@@ -67,27 +67,27 @@ public class Lab07 extends Application{
         Ellipse ellipse = new Ellipse(250, 350, 25, 20);
         ellipse.setFill(Color.BLUEVIOLET);
         
-        FadeTransition fade = new FadeTransition(new Duration(2000), ellipse);
+        FadeTransition fade = new FadeTransition(new Duration(2250), ellipse);
         fade.setAutoReverse(true);
         fade.setFromValue(1.0);
         fade.setToValue(0.5);
         fade.setCycleCount(2);
         
-        ScaleTransition scale = new ScaleTransition(new Duration(2000), ellipse);
+        ScaleTransition scale = new ScaleTransition(new Duration(1480), ellipse);
         scale.setAutoReverse(true);
         scale.setToX(2.0);
         scale.setToY(2.0);
         
-        RotateTransition rotation = new RotateTransition(new Duration(2000), ellipse);
+        RotateTransition rotation = new RotateTransition(new Duration(3000), ellipse);
         rotation.setByAngle(360);
-        rotation.setAutoReverse(true);
         
         TranslateTransition upCircle = new TranslateTransition(new Duration(2000), ellipse);
-        upCircle.setAutoReverse(true);
         upCircle.setToY(-200);
+        scale.setCycleCount(2);
+        upCircle.setAutoReverse(true);
+        upCircle.setCycleCount(2);
         
         SequentialTransition seq2 = new SequentialTransition(fade, scale, rotation, upCircle);
-
         ParallelTransition para = new ParallelTransition(pathTrans, seq2);
         
         // Buttons logic 
@@ -95,9 +95,17 @@ public class Lab07 extends Application{
             para.play();
         });
         reset.setOnAction(e -> {
-           para.stop();
-           para.play();
-           para.stop();
+            para.stop();
+            // Reset rectangle object position
+            rectangleObj.setTranslateX(0);
+            rectangleObj.setTranslateY(0);
+            // Reset ellipse position, scale, rotation, opacity
+            ellipse.setTranslateX(0);
+            ellipse.setTranslateY(0);
+            ellipse.setScaleX(1);
+            ellipse.setScaleY(1);
+            ellipse.setRotate(0);
+            ellipse.setOpacity(1);
         });
         exit.setOnAction(e -> {
             exit();
